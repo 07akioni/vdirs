@@ -24,8 +24,7 @@ class ZIndexManager {
     if (elementZIndex.has(el)) {
       const currentZIndex = elementZIndex.get(el)
       if (
-        currentZIndex !== undefined &&
-        currentZIndex + 1 === this.nextZIndex
+        currentZIndex! + 1 === this.nextZIndex
       ) return
     }
     el.style.zIndex = `${nextZIndex}`

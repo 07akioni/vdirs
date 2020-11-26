@@ -22,7 +22,7 @@ const zindexable: ObjectDirective<ZIndexableElement> = {
     const { value = {} } = bindings
     const { zIndex, enabled } = value
     const cachedEnabled = el[ctx].enabled
-    if (enabled && cachedEnabled !== enabled) {
+    if (enabled && !cachedEnabled) {
       zIndexManager.ensureZIndex(el, zIndex)
     }
     el[ctx].enabled = enabled
