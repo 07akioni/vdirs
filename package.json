@@ -1,0 +1,21 @@
+{
+  "name": "vdirs",
+  "version": "0.0.1",
+  "description": "Helper directives for Vue.",
+  "scripts": {
+    "build": "tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json",
+    "release": "npm run build && npm run publish"
+  },
+  "author": "07akioni",
+  "module": "es/index.js",
+  "main": "lib/index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@types/node": "^14.14.10",
+    "evtd": "^0.0.1-alpha.5",
+    "vue": "^3.0.3"
+  },
+  "devDependencies": {
+    "typescript": "^4.1.2"
+  }
+}

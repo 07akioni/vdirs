@@ -1,0 +1,12 @@
+{
+  "include": [
+    "src"
+  ],
+  "compilerOptions": {
+    "lib": ["es2020", "DOM"],
+    "target": "ES6",
+    "strict": true,
+    "declaration": true,
+    "moduleResolution": "node"
+  }
+}
