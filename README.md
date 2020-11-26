@@ -1,7 +1,7 @@
 # Vdirs
 Helper directives for Vue.
 ```
-zindexable
+zindexable: auto zindex management
 mousemoveoutside
 clickoutside
 ```

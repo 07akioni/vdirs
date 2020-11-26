@@ -4,8 +4,12 @@
   "description": "Helper directives for Vue.",
   "scripts": {
     "build": "tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json",
-    "release": "npm run build && npm run publish"
+    "release": "npm run build && npm publish"
   },
+  "files": [
+    "lib",
+    "es"
+  ],
   "author": "07akioni",
   "module": "es/index.js",
   "main": "lib/index.js",
