@@ -1,6 +1,6 @@
 {
   "name": "vdirs",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Helper directives for Vue.",
   "scripts": {
     "build": "tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json",
@@ -17,7 +17,7 @@
   "license": "MIT",
   "dependencies": {
     "@types/node": "^14.14.10",
-    "evtd": "^0.0.1-alpha.5",
+    "evtd": "^0.2.0",
     "vue": "^3.0.3"
   },
   "devDependencies": {
