@@ -1,42 +1,50 @@
 import { ObjectDirective } from 'vue'
 import { on, off } from 'evtd'
-import { warn } from './utils'
 
-const ctx: '@@coContext' = '@@coContext'
+const ctxKey: '@@coContext' = '@@coContext'
 
 interface ClickOutsideElement extends HTMLElement {
   '@@coContext': {
-    handler: (e: MouseEvent) => any
+    handler: ((e: MouseEvent) => any) | undefined
   }
 }
 
 const clickoutside: ObjectDirective<ClickOutsideElement> = {
   mounted (el, { value }) {
+    el[ctxKey] = {
+      handler: undefined
+    }
     if (typeof value === 'function') {
-      el[ctx] = {
-        handler: value
-      }
-      on('clickoutside', el, el[ctx].handler)
+      el[ctxKey].handler = value
+      on('clickoutside', el, value)
     }
   },
   updated (el, { value }) {
+    const ctx = el[ctxKey]
     if (typeof value === 'function') {
-      if (el[ctx] && el[ctx].handler) {
-        if (el[ctx].handler !== value) {
-          off('clickoutside', el, el[ctx].handler)
-          el[ctx].handler = value
-          on('clickoutside', el, el[ctx].handler)
+      if (ctx.handler) {
+        if (ctx.handler !== value) {
+          off('clickoutside', el, ctx.handler)
+          ctx.handler = value
+          on('clickoutside', el, value)
         }
       } else {
-        el[ctx].handler = value
-        on('clickoutside', el, el[ctx].handler)
+        el[ctxKey].handler = value
+        on('clickoutside', el, value)
       }
-    } else if (process.env.NODE_ENV !== 'production') {
-      warn('clickoutside', 'Binding value is not a function.')
+    } else {
+      if (ctx.handler) {
+        off('clickoutside', el, ctx.handler)
+        ctx.handler = undefined
+      }
     }
   },
   unmounted (el) {
-    off('clickoutside', el, el[ctx].handler)
+    const { handler } = el[ctxKey]
+    if (handler) {
+      off('clickoutside', el, handler)
+    }
+    el[ctxKey].handler = undefined
   }
 }
 
