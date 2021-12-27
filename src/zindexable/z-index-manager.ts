@@ -13,7 +13,7 @@ class ZIndexManager {
     return this.elementZIndex.size
   }
 
-  ensureZIndex (el: HTMLElement, zIndex ?: number) {
+  ensureZIndex (el: HTMLElement, zIndex?: number) {
     const { elementZIndex } = this
     if (zIndex !== undefined) {
       el.style.zIndex = `${zIndex}`
@@ -33,12 +33,12 @@ class ZIndexManager {
     this.squashState()
   }
 
-  unregister (el: HTMLElement) {
+  unregister (el: HTMLElement, zIndex?: number) {
     const { elementZIndex } = this
     if (elementZIndex.has(el)) {
       elementZIndex.delete(el)
-    } else {
-      warn('vdirs/z-index-manager/unregister-element', 'Element not found when unregistering.')
+    } else if (zIndex === undefined) {
+      warn('z-index-manager/unregister-element', 'Element not found when unregistering.')
     }
     this.squashState()
   }

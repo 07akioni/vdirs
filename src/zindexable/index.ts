@@ -3,17 +3,20 @@ import zIndexManager from './z-index-manager'
 
 interface ZIndexableElement extends HTMLElement {
   '@@ziContext': {
-    enabled: boolean
+    enabled?: boolean
   }
 }
 
 const ctx: '@@ziContext' = '@@ziContext'
 
-const zindexable: ObjectDirective<ZIndexableElement> = {
+// We don't expect manually bound zindex should be changed
+const zindexable: ObjectDirective<ZIndexableElement, { zIndex?: number, enabled?: boolean } | undefined> = {
   mounted (el, bindings) {
     const { value = {} } = bindings
     const { zIndex, enabled } = value
-    zIndexManager.ensureZIndex(el, zIndex)
+    if (enabled) {
+      zIndexManager.ensureZIndex(el, zIndex)
+    }
     el[ctx] = {
       enabled
     }
@@ -27,8 +30,10 @@ const zindexable: ObjectDirective<ZIndexableElement> = {
     }
     el[ctx].enabled = enabled
   },
-  unmounted (el) {
-    zIndexManager.unregister(el)
+  unmounted (el, bindings) {
+    const { value = {} } = bindings
+    const { zIndex } = value
+    zIndexManager.unregister(el, zIndex)
   }
 }
 
