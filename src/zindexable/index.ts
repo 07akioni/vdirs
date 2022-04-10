@@ -11,8 +11,11 @@ interface ZIndexableElement extends HTMLElement {
 const ctx: '@@ziContext' = '@@ziContext'
 
 // We don't expect manually bound zindex should be changed
-const zindexable: ObjectDirective<ZIndexableElement, { zIndex?: number, enabled?: boolean } | undefined> = {
-  mounted (el, bindings) {
+const zindexable: ObjectDirective<
+  ZIndexableElement,
+  { zIndex?: number; enabled?: boolean } | undefined
+> = {
+  mounted(el, bindings) {
     const { value = {} } = bindings
     const { zIndex, enabled } = value
     el[ctx] = {
@@ -24,7 +27,7 @@ const zindexable: ObjectDirective<ZIndexableElement, { zIndex?: number, enabled?
       el[ctx].initialized = true
     }
   },
-  updated (el, bindings) {
+  updated(el, bindings) {
     const { value = {} } = bindings
     const { zIndex, enabled } = value
     const cachedEnabled = el[ctx].enabled
@@ -34,7 +37,7 @@ const zindexable: ObjectDirective<ZIndexableElement, { zIndex?: number, enabled?
     }
     el[ctx].enabled = !!enabled
   },
-  unmounted (el, bindings) {
+  unmounted(el, bindings) {
     if (!el[ctx].initialized) return
     const { value = {} } = bindings
     const { zIndex } = value

@@ -4,16 +4,16 @@ class ZIndexManager {
   elementZIndex: Map<HTMLElement, number>
   nextZIndex: number
 
-  constructor () {
+  constructor() {
     this.elementZIndex = new Map()
     this.nextZIndex = 2000
   }
 
-  get elementCount () {
+  get elementCount() {
     return this.elementZIndex.size
   }
 
-  ensureZIndex (el: HTMLElement, zIndex?: number) {
+  ensureZIndex(el: HTMLElement, zIndex?: number) {
     const { elementZIndex } = this
     if (zIndex !== undefined) {
       el.style.zIndex = `${zIndex}`
@@ -23,9 +23,7 @@ class ZIndexManager {
     const { nextZIndex } = this
     if (elementZIndex.has(el)) {
       const currentZIndex = elementZIndex.get(el)
-      if (
-        currentZIndex! + 1 === this.nextZIndex
-      ) return
+      if (currentZIndex! + 1 === this.nextZIndex) return
     }
     el.style.zIndex = `${nextZIndex}`
     elementZIndex.set(el, nextZIndex)
@@ -33,17 +31,20 @@ class ZIndexManager {
     this.squashState()
   }
 
-  unregister (el: HTMLElement, zIndex?: number) {
+  unregister(el: HTMLElement, zIndex?: number) {
     const { elementZIndex } = this
     if (elementZIndex.has(el)) {
       elementZIndex.delete(el)
     } else if (zIndex === undefined) {
-      warn('z-index-manager/unregister-element', 'Element not found when unregistering.')
+      warn(
+        'z-index-manager/unregister-element',
+        'Element not found when unregistering.'
+      )
     }
     this.squashState()
   }
 
-  squashState () {
+  squashState() {
     const { elementCount } = this
     if (!elementCount) {
       this.nextZIndex = 2000
@@ -51,13 +52,13 @@ class ZIndexManager {
     if (this.nextZIndex - elementCount > 2500) this.rearrange()
   }
 
-  rearrange () {
+  rearrange() {
     const elementZIndexPair = Array.from(this.elementZIndex.entries())
     elementZIndexPair.sort((pair1, pair2) => {
       return pair1[1] - pair2[1]
     })
     this.nextZIndex = 2000
-    elementZIndexPair.forEach(pair => {
+    elementZIndexPair.forEach((pair) => {
       const el = pair[0]
       const zIndex = this.nextZIndex++
       if (`${zIndex}` !== el.style.zIndex) el.style.zIndex = `${zIndex}`

@@ -10,39 +10,51 @@ interface ClickOutsideElement extends HTMLElement {
 }
 
 const clickoutside: ObjectDirective<ClickOutsideElement> = {
-  mounted (el, { value }) {
+  mounted(el, { value, modifiers }) {
     el[ctxKey] = {
       handler: undefined
     }
     if (typeof value === 'function') {
       el[ctxKey].handler = value
-      on('clickoutside', el, value)
+      on('clickoutside', el, value, {
+        capture: modifiers.capture
+      })
     }
   },
-  updated (el, { value }) {
+  updated(el, { value, modifiers }) {
     const ctx = el[ctxKey]
     if (typeof value === 'function') {
       if (ctx.handler) {
         if (ctx.handler !== value) {
-          off('clickoutside', el, ctx.handler)
+          off('clickoutside', el, ctx.handler, {
+            capture: modifiers.capture
+          })
           ctx.handler = value
-          on('clickoutside', el, value)
+          on('clickoutside', el, value, {
+            capture: modifiers.capture
+          })
         }
       } else {
         el[ctxKey].handler = value
-        on('clickoutside', el, value)
+        on('clickoutside', el, value, {
+          capture: modifiers.capture
+        })
       }
     } else {
       if (ctx.handler) {
-        off('clickoutside', el, ctx.handler)
+        off('clickoutside', el, ctx.handler, {
+          capture: modifiers.capture
+        })
         ctx.handler = undefined
       }
     }
   },
-  unmounted (el) {
+  unmounted(el, { modifiers }) {
     const { handler } = el[ctxKey]
     if (handler) {
-      off('clickoutside', el, handler)
+      off('clickoutside', el, handler, {
+        capture: modifiers.capture
+      })
     }
     el[ctxKey].handler = undefined
   }

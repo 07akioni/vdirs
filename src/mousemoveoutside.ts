@@ -1,7 +1,7 @@
 import { ObjectDirective } from 'vue'
 import { on, off } from 'evtd'
 
-const ctxKey:'@@mmoContext' = '@@mmoContext'
+const ctxKey: '@@mmoContext' = '@@mmoContext'
 
 interface MouseMoveOutsideElement extends HTMLElement {
   '@@mmoContext': {
@@ -10,7 +10,7 @@ interface MouseMoveOutsideElement extends HTMLElement {
 }
 
 const mousemoveoutside: ObjectDirective<MouseMoveOutsideElement> = {
-  mounted (el, { value }) {
+  mounted(el, { value }) {
     el[ctxKey] = {
       handler: undefined
     }
@@ -19,7 +19,7 @@ const mousemoveoutside: ObjectDirective<MouseMoveOutsideElement> = {
       on('mousemoveoutside', el, value)
     }
   },
-  updated (el, { value }) {
+  updated(el, { value }) {
     const ctx = el[ctxKey]
     if (typeof value === 'function') {
       if (ctx.handler) {
@@ -39,7 +39,7 @@ const mousemoveoutside: ObjectDirective<MouseMoveOutsideElement> = {
       }
     }
   },
-  unmounted (el) {
+  unmounted(el) {
     const { handler } = el[ctxKey]
     if (handler) {
       off('mousemoveoutside', el, handler)
